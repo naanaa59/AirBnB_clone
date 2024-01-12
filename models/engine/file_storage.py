@@ -44,16 +44,31 @@ class FileStorage:
 
         with open (self.__file_path, "w") as file:
             file.write(json.dumps(serialized_objects))
-    
-    def reload(self):
-        """
-        deserializes the JSON file to __objects (only if
-        the JSON file (__file_path) exists
-        """
-        from ..base_model import BaseModel
-        if os.path.exists(self.__file_path ) and os.path.getsize(self.__file_path):
-            with open(self.__file_path, 'r') as file:
-                deserialized_objects = json.load(file)
-                for key, value in deserialized_objects.items():
-                    self.__objects[key] = BaseModel(**value)
 
+    def reload(self):
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.city import City
+        from models.place import Place
+        from models.state import State
+        from models.amenity import Amenity
+        from models.review import Review
+
+        """
+            deserializes the JSON file to __objects
+            only if the JSON file (__file_path) exists
+             otherwise, do nothing. If the file doesn’t exist,
+             no exception should be raised)
+        """
+        classes = {
+            'BaseModel': BaseModel, 'User': User,
+            'State': State, 'Place': Place, 'City': City,
+            'Amenity': Amenity, 'Review': Review}
+
+        if os.path.exists(self.__file_path) and\
+                os.path.getsize(self.__file_path) > 0:
+            with open(self.__file_path, 'r') as file:
+                dictionaries_obj = json.load(file)
+                for key, obj in dictionaries_obj.items():
+                    class_name, instance_id = key.split('.')
+                    self.__objects[key] = classes[key.split('.')[0]](**obj)

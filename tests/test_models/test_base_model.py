@@ -12,7 +12,6 @@ class TestBaseModel(unittest.TestCase):
         Test class for Basemodel class
     """
 
-
     def test_init(self):
         """
             __init__ method testing
@@ -31,13 +30,12 @@ class TestBaseModel(unittest.TestCase):
         model = BaseModel()
         model_dict = model.to_dict()
         new_model = BaseModel(**model_dict)
+
         self.assertEqual(model.id, new_model.id)
-        self.assertEqual(datetime.fromisoformat(model.created_at), new_model.created_at)
-        self.assertEqual(datetime.fromisoformat(model.updated_at), new_model.updated_at)
+        self.assertEqual(model.created_at, new_model.created_at)
+        self.assertEqual(model.updated_at, new_model.updated_at)
         self.assertIsInstance(model, BaseModel)
         self.assertIsInstance(new_model, BaseModel)
-
-
 
     def test_save_method(self):
         """
@@ -56,11 +54,10 @@ class TestBaseModel(unittest.TestCase):
         model = BaseModel()
         model_dict = model.to_dict()
         self.assertTrue(isinstance(model_dict, dict))
-        self.assertIn('__class__',model_dict)
-        self.assertIn('created_at',model_dict)
-        self.assertIn('updated_at',model_dict)
-        self.assertIn('id',model_dict)
-
+        self.assertIn('__class__', model_dict)
+        self.assertIn('created_at', model_dict)
+        self.assertIn('updated_at', model_dict)
+        self.assertIn('id', model_dict)
 
     def test_to_dict_values(self):
         """
@@ -68,11 +65,13 @@ class TestBaseModel(unittest.TestCase):
         """
         model = BaseModel()
         model_dict = model.to_dict()
-
+        model_created_at = datetime.fromisoformat(model_dict['created_at'])
+        model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
+    
         self.assertEqual(model_dict['__class__'], 'BaseModel')
-        self.assertEqual(model_dict['created_at'], model.created_at)
-        self.assertEqual(model_dict['updated_at'], model.updated_at)
         self.assertEqual(model_dict['id'], model.id)
+        self.assertEqual(model_created_at, model.created_at)
+        self.assertEqual(model_updated_at, model.updated_at)
 
     def test_str_method(self):
         """
