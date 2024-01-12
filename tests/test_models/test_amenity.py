@@ -1,19 +1,17 @@
 #!/usr/bin/python3
-""" Test file for City class """
+""" Test file for Amenity class """
 from models.engine.file_storage import FileStorage
-from models.city import City
-from models.state import State
+import os
+from models.amenity import Amenity
 import unittest
 from datetime import datetime
 from time import sleep
-import os
 import shutil
 
-class TestCity(unittest.TestCase):
+class TestAmenity(unittest.TestCase):
     """
-        Test class for City class
+        Test class for Amenity class
     """
-
     back_up_path = "back_up.json"
     original_path = FileStorage._FileStorage__file_path
     
@@ -34,13 +32,11 @@ class TestCity(unittest.TestCase):
         """
             __init__ method testing
         """
-        model = City()
-        state = State()
-        model.name = "NY"
-        model.state_id = state.id
+        model = Amenity()
+        model.name = "pool"
+        
 
         self.assertTrue(hasattr(model, 'id'))
-        self.assertTrue(hasattr(model, 'state_id'))
         self.assertTrue(hasattr(model, 'created_at'))
         self.assertTrue(hasattr(model, 'updated_at'))
         self.assertTrue(hasattr(model, 'name'))
@@ -49,27 +45,27 @@ class TestCity(unittest.TestCase):
         self.assertIsInstance(model.updated_at, datetime)
         self.assertIsInstance(model.name, str)
 
-
     def test_init_with_kwargs(self):
         """
             init with kwargs testing
         """
-        model = City()
+        model = Amenity()
         
         model_dict = model.to_dict()
-        new_model = City(**model_dict)
+        new_model = Amenity(**model_dict)
 
         self.assertEqual(model.id, new_model.id)
         self.assertEqual(model.created_at, new_model.created_at)
         self.assertEqual(model.updated_at, new_model.updated_at)
-        self.assertIsInstance(model, City)
-        self.assertIsInstance(new_model, City)
+        self.assertIsInstance(model, Amenity)
+        self.assertIsInstance(new_model, Amenity)
+        self.assertIsNot(model, new_model)
 
     def test_save_method(self):
         """
             save() method testing
         """
-        model = City()
+        model = Amenity()
         initial_updated_at = model.updated_at
         sleep(0.1)
         model.save()
@@ -79,10 +75,8 @@ class TestCity(unittest.TestCase):
         """
             to_dict() methos testing
         """
-        model = City()
-        state = State()
-        model.name = "NY"
-        model.state_id = state.id
+        model = Amenity()
+        model.name = "pool"
 
         model_dict = model.to_dict()
 
@@ -92,7 +86,7 @@ class TestCity(unittest.TestCase):
         self.assertIn('updated_at', model_dict)
         self.assertIn('id', model_dict)
         self.assertIn('name', model_dict)
-        self.assertIn('state_id', model_dict)
+        
 
         
 
@@ -100,19 +94,16 @@ class TestCity(unittest.TestCase):
         """
             to_dict() methos testing
         """
-        model = City()
-        state = State()
-        model.name = "state"
-        model.state_id = state.id
+        model = Amenity()
+        model.name = "pool"
     
         model_dict = model.to_dict()
 
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
     
-        self.assertEqual(model_dict['__class__'], 'City')
+        self.assertEqual(model_dict['__class__'], 'Amenity')
         self.assertEqual(model_dict['id'], model.id)
-        self.assertEqual(model_dict['state_id'], model.state_id)
         self.assertEqual(model_created_at, model.created_at)
         self.assertEqual(model_updated_at, model.updated_at)
         self.assertEqual(model.name, model_dict['name'])
@@ -121,7 +112,8 @@ class TestCity(unittest.TestCase):
         """
             __str__ method testing
         """
-        model = City()
+        model = Amenity()
+        model.name = "pool"
         expected_output = f"[{model.__class__.__name__}] \
 ({model.id}) {model.__dict__}"
         self.assertEqual(str(model), expected_output)

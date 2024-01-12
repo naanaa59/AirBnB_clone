@@ -1,19 +1,19 @@
-#!/usr/bin/python3
-""" Test file for City class """
+#!/usr/bin/env python3
+""" Test file for Review class """
 from models.engine.file_storage import FileStorage
-from models.city import City
-from models.state import State
+from models.review import Review
+from models.place import Place
+from models.user import User
 import unittest
 from datetime import datetime
 from time import sleep
 import os
 import shutil
 
-class TestCity(unittest.TestCase):
+class TestReview(unittest.TestCase):
     """
-        Test class for City class
+        Test class for Review class
     """
-
     back_up_path = "back_up.json"
     original_path = FileStorage._FileStorage__file_path
     
@@ -34,42 +34,45 @@ class TestCity(unittest.TestCase):
         """
             __init__ method testing
         """
-        model = City()
-        state = State()
-        model.name = "NY"
-        model.state_id = state.id
+        model = Review()
+        usr = User()
+        plc = Place()
+        model.place_id = plc.id
+        model.user_id = usr.id
+        model.text = "some text"
 
         self.assertTrue(hasattr(model, 'id'))
-        self.assertTrue(hasattr(model, 'state_id'))
         self.assertTrue(hasattr(model, 'created_at'))
         self.assertTrue(hasattr(model, 'updated_at'))
-        self.assertTrue(hasattr(model, 'name'))
+        self.assertTrue(hasattr(model, 'place_id'))
+        self.assertTrue(hasattr(model, 'user_id'))
+        self.assertTrue(hasattr(model, 'text'))
 
         self.assertIsInstance(model.created_at, datetime)
         self.assertIsInstance(model.updated_at, datetime)
-        self.assertIsInstance(model.name, str)
-
+        self.assertIsInstance(model.place_id, str)
+        self.assertIsInstance(model.user_id, str)
+        self.assertIsInstance(model.text, str)
 
     def test_init_with_kwargs(self):
         """
             init with kwargs testing
         """
-        model = City()
-        
+        model = Review()
         model_dict = model.to_dict()
-        new_model = City(**model_dict)
+        new_model = Review(**model_dict)
 
         self.assertEqual(model.id, new_model.id)
         self.assertEqual(model.created_at, new_model.created_at)
         self.assertEqual(model.updated_at, new_model.updated_at)
-        self.assertIsInstance(model, City)
-        self.assertIsInstance(new_model, City)
+        self.assertIsInstance(model, Review)
+        self.assertIsInstance(new_model, Review)
 
     def test_save_method(self):
         """
             save() method testing
         """
-        model = City()
+        model = Review()
         initial_updated_at = model.updated_at
         sleep(0.1)
         model.save()
@@ -79,49 +82,52 @@ class TestCity(unittest.TestCase):
         """
             to_dict() methos testing
         """
-        model = City()
-        state = State()
-        model.name = "NY"
-        model.state_id = state.id
+        model = Review()
+        usr = User()
+        plc = Place()
+        model.place_id = plc.id
+        model.user_id = usr.id
+        model.text = "some text"
 
         model_dict = model.to_dict()
-
         self.assertTrue(isinstance(model_dict, dict))
         self.assertIn('__class__', model_dict)
         self.assertIn('created_at', model_dict)
         self.assertIn('updated_at', model_dict)
         self.assertIn('id', model_dict)
-        self.assertIn('name', model_dict)
-        self.assertIn('state_id', model_dict)
-
-        
+        self.assertIn('place_id', model_dict)
+        self.assertIn('user_id', model_dict)
+        self.assertIn('text', model_dict)
 
     def test_to_dict_values(self):
         """
             to_dict() methos testing
         """
-        model = City()
-        state = State()
-        model.name = "state"
-        model.state_id = state.id
-    
+        model = Review()
+        usr = User()
+        plc = Place()
+        model.place_id = plc.id
+        model.user_id = usr.id
+        model.text = "some text"
+
         model_dict = model.to_dict()
 
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
     
-        self.assertEqual(model_dict['__class__'], 'City')
+        self.assertEqual(model_dict['__class__'], 'Review')
         self.assertEqual(model_dict['id'], model.id)
-        self.assertEqual(model_dict['state_id'], model.state_id)
         self.assertEqual(model_created_at, model.created_at)
         self.assertEqual(model_updated_at, model.updated_at)
-        self.assertEqual(model.name, model_dict['name'])
-    
+        self.assertEqual(model_dict['place_id'], model.place_id)
+        self.assertEqual(model_dict['user_id'], model.user_id)
+        self.assertEqual(model_dict['text'], model.text)
+
     def test_str_method(self):
         """
             __str__ method testing
         """
-        model = City()
+        model = Review()
         expected_output = f"[{model.__class__.__name__}] \
 ({model.id}) {model.__dict__}"
         self.assertEqual(str(model), expected_output)

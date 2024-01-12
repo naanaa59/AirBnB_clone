@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """ Test file for Place class """
-
+from models.engine.file_storage import FileStorage
 from models.place import Place
 from models.city import City
 from models.user import User
@@ -9,13 +9,29 @@ from models.amenity import Amenity
 import unittest
 from datetime import datetime
 from time import sleep
+import os
+import shutil
 
-
-class TestBaseModel(unittest.TestCase):
+class TestPlace(unittest.TestCase):
     """
-        Test class for Basemodel class
+        Test class for Place class
     """
+    back_up_path = "back_up.json"
+    original_path = FileStorage._FileStorage__file_path
+    
+    def setUp(self) -> None:
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            shutil.copy(self.original_path, self.back_up_path)
 
+    
+    def tearDown(self):
+        """Resets FileStorage data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
+        if os.path.exists(self.back_up_path):
+            shutil.move(self.back_up_path, self.original_path)
+            
     def test_init(self):
         """
             __init__ method testing
@@ -54,6 +70,17 @@ class TestBaseModel(unittest.TestCase):
 
         self.assertIsInstance(model.created_at, datetime)
         self.assertIsInstance(model.updated_at, datetime)
+        self.assertIsInstance(model.city_id, str)
+        self.assertIsInstance(model.user_id, str)
+        self.assertIsInstance(model.name, str)
+        self.assertIsInstance(model.description, str)
+        self.assertIsInstance(model.number_bathrooms, int)
+        self.assertIsInstance(model.number_rooms, int)
+        self.assertIsInstance(model.max_guest, int)
+        self.assertIsInstance(model.price_by_night, int)
+        self.assertIsInstance(model.latitude, float)
+        self.assertIsInstance(model.longitude, float)
+        self.assertIsInstance(model.amenity_ids, str)
 
     def test_init_with_kwargs(self):
         """

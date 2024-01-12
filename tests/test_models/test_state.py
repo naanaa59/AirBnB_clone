@@ -1,16 +1,32 @@
 #!/usr/bin/python3
 """ Test file for State class """
-
+from models.engine.file_storage import FileStorage
 from models.state import State
 import unittest
 from datetime import datetime
 from time import sleep
+import os
+import shutil
 
+class TestState(unittest.TestCase):
+    """
+        Test class for State class
+    """
+    back_up_path = "back_up.json"
+    original_path = FileStorage._FileStorage__file_path
+    
+    def setUp(self) -> None:
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            shutil.copy(self.original_path, self.back_up_path)
 
-class TestBaseModel(unittest.TestCase):
-    """
-        Test class for Basemodel class
-    """
+    
+    def tearDown(self):
+        """Resets FileStorage data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
+        if os.path.exists(self.back_up_path):
+            shutil.move(self.back_up_path, self.original_path)
 
     def test_init(self):
         """

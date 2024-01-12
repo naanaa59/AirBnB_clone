@@ -20,10 +20,17 @@ class TestFileStorage(unittest.TestCase):
     """
         Test class for FileStorage class
     """
+    file_path = FileStorage._FileStorage__file_path
+    data = None
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as f:
+            data = f.read()
+    
+
     def setUp(self):
         pass
 
-    def tearDown(self) -> None:
+    def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
         if os.path.exists(FileStorage._FileStorage__file_path):
@@ -37,7 +44,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(result, dict)
 
     def test_new_method(self):
-        """ 
+        """
             new() method testing for adding new object to __objects
         """
         bm = BaseModel()
@@ -53,20 +60,6 @@ class TestFileStorage(unittest.TestCase):
         """
             save() method testing if called
         """
-        bm = BaseModel()       
-        storage.save()
-        self.assertTrue(os.path.exists("file.json"))
-
-        with open("file.json", 'r') as json_file:
-            data = json.load(json_file)
-
-        self.assertIn("BaseModel." + bm.id, data)
-
-    def test_save_with_arg(self):
-        with self.assertRaises(TypeError):
-            storage.save(None)
-    
-    def test_reload_method(self):
         bm = BaseModel()
         usr = User()
         cty = City()
@@ -75,9 +68,32 @@ class TestFileStorage(unittest.TestCase):
         st = State()
         rv = Review()
 
-        storage.new(bm)
         storage.save()
-        storage.reload()
+        self.assertTrue(os.path.exists("file.json"))
+
+        with open("file.json", 'r') as json_file:
+            data = json.load(json_file)
+
+        self.assertIn("BaseModel." + bm.id, data)
+        self.assertIn("User." + usr.id, data)
+        self.assertIn("City." + cty.id, data)
+        self.assertIn("Place." + pl.id, data)
+        self.assertIn("Amenity." + am.id, data)
+        self.assertIn("State." + st.id, data)
+        self.assertIn("Review." + rv.id, data)
+
+    def test_save_with_arg(self):
+        with self.assertRaises(TypeError):
+            storage.save(None)
+
+    def test_reload_method(self):
+        bm = BaseModel()
+        usr = User()
+        cty = City()
+        pl = Place()
+        am = Amenity()
+        st = State()
+        rv = Review()
 
         objects = FileStorage._FileStorage__objects
         self.assertIn("BaseModel." + bm.id, objects)
@@ -91,3 +107,7 @@ class TestFileStorage(unittest.TestCase):
     def test_reload_with_arg(self):
         with self.assertRaises(TypeError):
             storage.reload(None)
+
+    if data is not None:
+        with open(file_path, 'w') as f:
+            f.write(data)

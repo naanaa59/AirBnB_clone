@@ -1,66 +1,85 @@
 #!/usr/bin/python3
 """ Test file for User class """
 
+from typing import Any
 from models.user import User
+from models.engine.file_storage import FileStorage
 import unittest
 from datetime import datetime
 from time import sleep
+import os
+import shutil
 
-
-class TestBaseModel(unittest.TestCase):
+class TestUser(unittest.TestCase):
     """
-        Test class for Basemodel class
+        Test class for User class
     """
+    back_up_path = "back_up.json"
+    original_path = FileStorage._FileStorage__file_path
+    model = User()
+    model.email = "test@gmail.com"
+    model.password = "root"
+    model.first_name = "my_first"
+    model.last_name = "my_last"
+    
+    def setUp(self) -> None:
+        
+        model_dict = self.model.to_dict()
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            shutil.copy(self.original_path, self.back_up_path)
 
+    
+    def tearDown(self):
+        """Resets FileStorage data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
+        if os.path.exists(self.back_up_path):
+            shutil.move(self.back_up_path, self.original_path)
+    
     def test_init(self):
         """
             __init__ method testing
         """
-        model = User()
-        self.assertTrue(hasattr(model, 'id'))
-        self.assertTrue(hasattr(model, 'created_at'))
-        self.assertTrue(hasattr(model, 'updated_at'))
-        self.assertTrue(hasattr(model, 'email'))
-        self.assertTrue(hasattr(model, 'password'))
-        self.assertTrue(hasattr(model, 'first_name'))
-        self.assertTrue(hasattr(model, 'last_name'))
-        self.assertIsInstance(model.created_at, datetime)
-        self.assertIsInstance(model.updated_at, datetime)
+        
+        self.assertTrue(hasattr(self.model, 'id'))
+        self.assertTrue(hasattr(self.model, 'created_at'))
+        self.assertTrue(hasattr(self.model, 'updated_at'))
+        self.assertTrue(hasattr(self.model, 'email'))
+        self.assertTrue(hasattr(self.model, 'password'))
+        self.assertTrue(hasattr(self.model, 'first_name'))
+        self.assertTrue(hasattr(self.model, 'last_name'))
+        self.assertIsInstance(self.model.created_at, datetime)
+        self.assertIsInstance(self.model.updated_at, datetime)
 
     def test_init_with_kwargs(self):
         """
             init with kwargs testing
         """
-        model = User()
-        model_dict = model.to_dict()
+        model_dict = self.model.to_dict()
         new_model = User(**model_dict)
 
-        self.assertEqual(model.id, new_model.id)
-        self.assertEqual(model.created_at, new_model.created_at)
-        self.assertEqual(model.updated_at, new_model.updated_at)
-        self.assertIsInstance(model, User)
+        self.assertEqual(self.model.id, new_model.id)
+        self.assertEqual(self.model.created_at, new_model.created_at)
+        self.assertEqual(self.model.updated_at, new_model.updated_at)
+        self.assertIsInstance(self.model, User)
         self.assertIsInstance(new_model, User)
 
     def test_save_method(self):
         """
             save() method testing
         """
-        model = User()
-        initial_updated_at = model.updated_at
+        
+        initial_updated_at = self.model.updated_at
         sleep(0.1)
-        model.save()
-        self.assertNotEqual(model.updated_at, initial_updated_at)
+        self.model.save()
+        self.assertNotEqual(self.model.updated_at, initial_updated_at)
 
     def test_to_dict_method(self):
         """
             to_dict() methos testing
         """
-        model = User()
-        model.email = "test@gmail.com"
-        model.password = "root"
-        model.first_name = "my_first"
-        model.last_name = "my_last"
-        model_dict = model.to_dict()
+        model_dict = self.model.to_dict()
         self.assertTrue(isinstance(model_dict, dict))
         self.assertIn('__class__', model_dict)
         self.assertIn('created_at', model_dict)
@@ -104,5 +123,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(str(model), expected_output)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  
     unittest.main()
+   
+
