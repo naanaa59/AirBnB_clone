@@ -14,8 +14,6 @@ class BaseModel():
     """
         Public Attributes:
             id : UUID4 generated ad converted to string
-            name : The name of the model
-            my_number : The number of the model
             created_at : datetime assign when instance created
             updated_at : datetime assign when instance updated
 
@@ -30,10 +28,12 @@ class BaseModel():
         """
         if kwargs and len(kwargs) > 0:
             for key, value in kwargs.items():
-                if key != '__class__':
-                    self.__dict__.update({key: value})
-            self.created_at = datetime.fromisoformat(str(kwargs.get('created_at')))
-            self.updated_at = datetime.fromisoformat(str(kwargs.get('updated_at')))
+                if key == '__class__':
+                    continue
+                if key == "created_at" or key == "updated_at":
+                    value = datetime.fromisoformat(value)
+                setattr(self, key, value)
+            return
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -59,7 +59,7 @@ class BaseModel():
         """
             returns a dictionary containing all keys/values
         """
-        dictionary = self.__dict__
+        dictionary = self.__dict__.copy()
         dictionary['__class__'] = self.__class__.__name__
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
