@@ -6,6 +6,8 @@ the command interpreter:
 
 
 import cmd
+import re
+import shlex
 from models.base_model import BaseModel
 from models.user import User
 from models.amenity import Amenity
@@ -111,7 +113,7 @@ on the class name and id (save the change into the JSON file)."""
         """Reload command Updates an instance based on
 the class name and id by adding or updating attribute
 (save the change into the JSON file)."""
-        args = arg.split()
+        args = shlex.split(arg)
         obj = storage.all()
         if not validated_args(args, check_id=True):
             return
@@ -127,6 +129,7 @@ the class name and id by adding or updating attribute
         else:
             attr_name = args[2]
             attr_value = args[3]
+
             setattr(obj[key], attr_name, eval(attr_value))
             storage.save()
 
@@ -153,12 +156,18 @@ on their class name"""
 
         args = arg.split(".")
         'output [User, all()]'
-
+        obj_id = None
+        attr_name = None
+        attr_value = None
         class_name = args[0]
         command = args[1].split("(")
-
         'output [all, )]'
         method = command[0]
+        content = command[1].rstrip(')').split(',')
+        obj_id = content[0].strip()
+        if len(content) >= 3:
+            attr_name = content[1].rstrip()
+            attr_value = content[2].rstrip()
 
         validated_methods = {
             'all': self.do_all,
@@ -167,7 +176,18 @@ on their class name"""
             'update': self.do_update
             }
         if method in validated_methods.keys():
-            return validated_methods[method](f"{class_name}")
+            if obj_id is None:
+                return validated_methods[
+                    method](f"{class_name}")
+            elif attr_name is not None and attr_value is not None:
+                return validated_methods[
+                    method](
+                        f"{class_name} {obj_id} {attr_name} {attr_value}")
+        print(method)
+        print(class_name)
+        print(obj_id)
+        print(attr_name)
+        print(attr_value)
         print("** Unknown syntax: {}".format(arg))
         return False
 
