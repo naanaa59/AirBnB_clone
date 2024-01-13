@@ -113,10 +113,20 @@ on the class name and id (save the change into the JSON file)."""
         """Reload command Updates an instance based on
 the class name and id by adding or updating attribute
 (save the change into the JSON file)."""
-        args = shlex.split(arg)
+
+        prased_arg = re.match(
+            r'^(\S*)\s?(\S*)\s?("[^"]+"|\S*)?\s?("[^"]+"|\S*)', arg)
         obj = storage.all()
+        args = list(prased_arg.groups())
         if not validated_args(args, check_id=True):
             return
+
+        attr_name, attr_value = arg[2], arg[3]
+
+        try:
+            attr_value = eval(attr_value)
+        except Exception:
+            pass
         key = f"{args[0]}.{args[1]}"
         req_instance = obj.get(key, None)
         if req_instance is None:
@@ -130,7 +140,7 @@ the class name and id by adding or updating attribute
             attr_name = args[2]
             attr_value = args[3]
 
-            setattr(obj[key], attr_name, eval(attr_value))
+            setattr(obj[key], attr_name, attr_value)
             storage.save()
 
     def do_count(self, arg):
