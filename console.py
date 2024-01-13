@@ -133,7 +133,7 @@ the class name and id by adding or updating attribute
         try:
             attr_value = eval(attr_value)
         except Exception:
-                pass
+            pass
         key = f"{args[0]}.{args[1]}"
         req_instance = obj.get(key, None)
         if req_instance is None:
