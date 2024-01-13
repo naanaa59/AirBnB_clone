@@ -299,7 +299,6 @@ class TestState(unittest.TestCase):
             res = f"[{type(st).__name__}] ({st.id}) {st.__dict__}"
             self.assertEqual(f.getvalue().strip(), res)
 
-
     def test_destroy_state(self):
         """Test destroy state object.
         """
@@ -362,7 +361,6 @@ class TestStateDotNotation(unittest.TestCase):
                                  f'State.show({st.id})'))
             res = f"[{type(st).__name__}] ({st.id}) {st.__dict__}"
             self.assertEqual(f.getvalue().strip(), res)
-
 
     def test_destroy_state(self):
         """Test destroy state object.
