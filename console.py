@@ -165,7 +165,7 @@ on their class name"""
         obj_id = obj[0]
 
         validated_methods = {
-            'all': self.do_all,
+            'all': self.do_all, 'create': self.do_create,
             'count': self.do_count,
             'show': self.do_show, 'destroy': self.do_destroy,
             'update': self.do_update
