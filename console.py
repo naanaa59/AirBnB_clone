@@ -26,7 +26,7 @@ validated_classes = {
 
 def validated_args(args, check_id=False):
     """Checks on args to validated classname entry"""
-    if not args and not args[0]:
+    if not args or not args[0]:
         print("** class name missing **")
         return False
     class_name = args[0]
