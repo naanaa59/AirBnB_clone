@@ -127,6 +127,3 @@ class TestCity(unittest.TestCase):
 ({model.id}) {model.__dict__}"
         self.assertEqual(str(model), expected_output)
 
-
-if __name__ == '__main__':
-    unittest.main()
