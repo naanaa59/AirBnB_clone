@@ -26,14 +26,14 @@ validated_classes = {
 
 def validated_args(args, check_id=False):
     """Checks on args to validated classname entry"""
-    if len(args) < 1:
+    if not args[0]:
         print("** class name missing **")
         return False
     class_name = args[0]
     if class_name not in validated_classes and class_name not in globals():
         print("** class doesn't exist **")
         return False
-    if len(args) < 2 and check_id:
+    if not args[1] and check_id:
         print("** instance id missing **")
         return False
     return True
@@ -115,33 +115,32 @@ the class name and id by adding or updating attribute
 (save the change into the JSON file)."""
 
         prased_arg = re.match(
-            r'^(\S*)\s?(\S*)\s?("[^"]+"|\S*)?\s?("[^"]+"|\S*)', arg)
+            r'^(\S*)\s?(\S*)\s?("[^"]*"|\S*)?\s?("[^"]*"|\S*)', arg)
         obj = storage.all()
         args = list(prased_arg.groups())
         if not validated_args(args, check_id=True):
             return
+        args[0] = args[0].strip('"')
+        args[1] = args[1].strip('"')
+        args[2] = args[2].strip('"')
 
-        attr_name, attr_value = arg[2], arg[3]
-
+        if not args[2]:
+            print("** attribute name missing **")
+        if not args[3]:
+            print("** value missing **")
+        attr_name = args[2]
+        attr_value = args[3]
         try:
             attr_value = eval(attr_value)
         except Exception:
-            pass
+                pass
         key = f"{args[0]}.{args[1]}"
-        req_instance = obj.get(key, None)
+        req_instance = obj[key]
         if req_instance is None:
             print("** no instance found **")
             return
-        if len(args) < 3:
-            print("** attribute name missing **")
-        if len(args) < 4:
-            print("** value missing **")
-        else:
-            attr_name = args[2]
-            attr_value = args[3]
-
-            setattr(obj[key], attr_name, attr_value)
-            storage.save()
+        setattr(obj[key], attr_name, attr_value)
+        storage.save()
 
     def do_count(self, arg):
         """Count command counts all instances based
