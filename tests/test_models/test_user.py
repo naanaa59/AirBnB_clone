@@ -90,8 +90,6 @@ class TestUserClass(unittest.TestCase):
         self.assertTrue(search_key in storage.all().keys())
         search_key = f"{self.u2.__class__.__name__}.{self.u2.id}"
         self.assertTrue(search_key in storage.all().keys())
-        # self.u1.save()
-        # self.u2.save()
 
     def test_to_dict_id(self):
         """Test to_dict method from BaseModel"""

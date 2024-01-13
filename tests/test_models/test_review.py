@@ -1,141 +1,114 @@
-#!/usr/bin/env python3
-""" Test file for Review class """
-from models.engine.file_storage import FileStorage
-from models.review import Review
-from models.place import Place
-from models.user import User
+#!/usr/bin/python3
+"""
+A unittest for Review class
+"""
+
 import unittest
+from models.base_model import BaseModel
+from models.review import Review
+from models import storage
 from datetime import datetime
-from time import sleep
 import os
-import shutil
+import time
 
 
-class TestReview(unittest.TestCase):
-    """
-        Test class for Review class
-    """
-    back_up_path = "back_up.json"
-    original_path = FileStorage._FileStorage__file_path
-
-    def setUp(self) -> None:
-        """
-            setUp method to create a backup file for
-            file.json
-        """
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            shutil.copy(self.original_path, self.back_up_path)
+class Test_Review_Class(unittest.TestCase):
+    """Unittest class for testing class Review
+    Test the following attributes
+    user_id = ""
+    place_id = ""
+    text = ""
+"""
+    def setUp(self):
+        """setUp method"""
+        self.r1 = Review()
+        self.r2 = Review()
+        
 
     def tearDown(self):
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.exists(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
-        if os.path.exists(self.back_up_path):
-            shutil.move(self.back_up_path, self.original_path)
+        """tearDown method"""
+        del self.r1
+        del self.r2
+        if os.path.exists("file.json"):
+            os.remove("file.json")
 
-    def test_init(self):
-        """
-            __init__ method testing
-        """
-        model = Review()
-        usr = User()
-        plc = Place()
-        model.place_id = plc.id
-        model.user_id = usr.id
-        model.text = "some text"
+    def test_Review_id(self):
+        """Test Review instance id"""
+        self.assertNotEqual(self.r1.id, self.r2.id)
 
-        self.assertTrue(hasattr(model, 'id'))
-        self.assertTrue(hasattr(model, 'created_at'))
-        self.assertTrue(hasattr(model, 'updated_at'))
-        self.assertTrue(hasattr(model, 'place_id'))
-        self.assertTrue(hasattr(model, 'user_id'))
-        self.assertTrue(hasattr(model, 'text'))
+    # ***************************************************************
+    
+    # *********************************************************
+    def test_datetime_attr(self):
+        """Test datetime attributes"""
+        self.assertIsInstance(self.r1.created_at, datetime)
+        self.assertIsInstance(self.r1.updated_at, datetime)
 
-        self.assertIsInstance(model.created_at, datetime)
-        self.assertIsInstance(model.updated_at, datetime)
-        self.assertIsInstance(model.place_id, str)
-        self.assertIsInstance(model.user_id, str)
-        self.assertIsInstance(model.text, str)
+    def test_initial_values(self):
+        """Test initial values for Review class attributes"""
+        self.assertEqual(self.r1.user_id, "")
+        self.assertEqual(self.r1.place_id, "")
+        self.assertEqual(self.r1.text, "")
 
-    def test_init_with_kwargs(self):
-        """
-            init with kwargs testing
-        """
-        model = Review()
-        model_dict = model.to_dict()
-        new_model = Review(**model_dict)
+    def test_Review_inherits_BaseModel(self):
+        """Test if Review inherits from BaseModel"""
+        self.assertIsInstance(self.r1, BaseModel)
 
-        self.assertEqual(model.id, new_model.id)
-        self.assertEqual(model.created_at, new_model.created_at)
-        self.assertEqual(model.updated_at, new_model.updated_at)
-        self.assertIsInstance(model, Review)
-        self.assertIsInstance(new_model, Review)
+    def test_Review_type(self):
+        """Test if Review instance is of the same type"""
+        self.assertEqual(type(self.r1), Review)
 
-    def test_save_method(self):
-        """
-            save() method testing
-        """
-        model = Review()
-        initial_updated_at = model.updated_at
-        sleep(0.1)
-        model.save()
-        self.assertNotEqual(model.updated_at, initial_updated_at)
+    def test_storage_contains_instances(self):
+        """Test storage contains the instances"""
+        search_key = f"{self.r1.__class__.__name__}.{self.r1.id}"
+        self.assertTrue(search_key in storage.all().keys())
+        search_key = f"{self.r2.__class__.__name__}.{self.r2.id}"
+        self.assertTrue(search_key in storage.all().keys())
+       
 
-    def test_to_dict_method(self):
-        """
-            to_dict() methos testing
-        """
-        model = Review()
-        usr = User()
-        plc = Place()
-        model.place_id = plc.id
-        model.user_id = usr.id
-        model.text = "some text"
+    def test_to_dict_id(self):
+        """Test to_dict method from BaseModel"""
+        dict_r1 = self.r1.to_dict()
+        self.assertIsInstance(dict_r1, dict)
+        self.assertIn('id', dict_r1.keys())
 
-        model_dict = model.to_dict()
-        self.assertTrue(isinstance(model_dict, dict))
-        self.assertIn('__class__', model_dict)
-        self.assertIn('created_at', model_dict)
-        self.assertIn('updated_at', model_dict)
-        self.assertIn('id', model_dict)
-        self.assertIn('place_id', model_dict)
-        self.assertIn('user_id', model_dict)
-        self.assertIn('text', model_dict)
+    def test_to_dict_created_at(self):
+        """Test to_dict method from BaseModel"""
+        dict_r1 = self.r1.to_dict()
+        self.assertIsInstance(dict_r1, dict)
+        self.assertIn('created_at', dict_r1.keys())
 
-    def test_to_dict_values(self):
-        """
-            to_dict() methos testing
-        """
-        model = Review()
-        usr = User()
-        plc = Place()
-        model.place_id = plc.id
-        model.user_id = usr.id
-        model.text = "some text"
+    def test_to_dict_updated_at(self):
+        """Test to_dict method from BaseModel"""
+        dict_r1 = self.r1.to_dict()
+        self.assertIsInstance(dict_r1, dict)
+        self.assertIn('updated_at', dict_r1.keys())
 
-        model_dict = model.to_dict()
+    def test_to_dict_class_name(self):
+        """Test to_dict method from BaseModel"""
+        dict_r1 = self.r1.to_dict()
+        self.assertEqual(self.r1.__class__.__name__, dict_r1["__class__"])
 
-        model_created_at = datetime.fromisoformat(model_dict['created_at'])
-        model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
+    def test_str_(self):
+        """Test __str__ method from BaseModel"""
+        cls_rp = str(self.r1)
+        format = "[{}] ({}) {}".format(self.r1.__class__.__name__,
+                                       self.r1.id, self.r1.__dict__)
+        self.assertEqual(format, cls_rp)
 
-        self.assertEqual(model_dict['__class__'], 'Review')
-        self.assertEqual(model_dict['id'], model.id)
-        self.assertEqual(model_created_at, model.created_at)
-        self.assertEqual(model_updated_at, model.updated_at)
-        self.assertEqual(model_dict['place_id'], model.place_id)
-        self.assertEqual(model_dict['user_id'], model.user_id)
-        self.assertEqual(model_dict['text'], model.text)
+    def test_check_two_instances_with_dict(self):
+        """Test to check an instance created from a dict is different from
+another"""
+        dict_r1 = self.r1.to_dict()
+        instance = Review(**dict_r1)
+        self.assertIsNot(self.r1, instance)
+        self.assertEqual(str(self.r1), str(instance))
+        self.assertFalse(instance is self.r1)
 
-    def test_str_method(self):
-        """
-            __str__ method testing
-        """
-        model = Review()
-        expected_output = f"[{model.__class__.__name__}] \
-({model.id}) {model.__dict__}"
-        self.assertEqual(str(model), expected_output)
-
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_save(self):
+        """Test save() method from BaseModel"""
+        update_old = self.r1.updated_at
+        time.sleep(0.1)
+        self.r1.save()
+        updated_new = self.r1.updated_at
+        self.assertNotEqual(update_old, updated_new)
