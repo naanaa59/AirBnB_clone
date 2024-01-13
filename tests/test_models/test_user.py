@@ -24,7 +24,10 @@ class TestUser(unittest.TestCase):
     model.last_name = "my_last"
 
     def setUp(self) -> None:
-
+        """
+            setUp method to create a backup file for
+            file.json
+        """
         model_dict = self.model.to_dict()
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)

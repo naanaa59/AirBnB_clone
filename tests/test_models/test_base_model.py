@@ -17,6 +17,10 @@ class TestBaseModel(unittest.TestCase):
     original_path = FileStorage._FileStorage__file_path
 
     def setUp(self) -> None:
+        """
+            setUp method to create a backup file for
+            file.json
+        """
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)
 

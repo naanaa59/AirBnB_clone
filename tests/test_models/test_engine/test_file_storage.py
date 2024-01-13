@@ -52,6 +52,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn("BaseModel." + bm.id, storage.all().keys())
 
     def test_new_with_args(self):
+        """
+            test method for new method with some args
+        """
         with self.assertRaises(TypeError):
             storage.new(BaseModel(), 1)
 
@@ -82,10 +85,16 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn("Review." + rv.id, data)
 
     def test_save_with_arg(self):
+        """
+            test method for save method with some args
+        """
         with self.assertRaises(TypeError):
             storage.save(None)
 
     def test_reload_method(self):
+        """
+            test for reload method with all objects
+        """
         bm = BaseModel()
         usr = User()
         cty = City()
@@ -104,6 +113,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn("Review." + rv.id, objects)
 
     def test_reload_with_arg(self):
+        """
+            test method for reload method with some args
+        """
         with self.assertRaises(TypeError):
             storage.reload(None)
 
