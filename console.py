@@ -185,7 +185,7 @@ on their class name"""
         all_args = []
         args_list = []
         res = re.match(
-            r'^\s*(\w+)\((?:([{"\']?.*["\'}]?))?\)\s*$', arg)
+            r'^\s*(\w+)\.(\w+)\((?:([{"\']?.*["\'}]?))?\)\s*$', arg)
         if res:
             name = res.group(1)
             command = res.group(2)
@@ -193,6 +193,8 @@ on their class name"""
         if args:
             content = re.match(
                 r'"?([^"]\S+)"?, {(.+)}', args)
+        else:
+            content = None
         if command == "update" and content:
             id = content.group(1)
             patt = re.compile(
