@@ -3,7 +3,13 @@
     FileStorage class serializes instances to a JSON file
     and deserializes JSONfile to instances
 """
-
+from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.amenity import Amenity
+from models.review import Review
 import json
 import os
 
@@ -60,14 +66,6 @@ class FileStorage:
              otherwise, do nothing. If the file doesn’t exist,
              no exception should be raised)
         """
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.city import City
-        from models.place import Place
-        from models.state import State
-        from models.amenity import Amenity
-        from models.review import Review
-
         classes = {
             'BaseModel': BaseModel, 'User': User,
             'State': State, 'Place': Place, 'City': City,
