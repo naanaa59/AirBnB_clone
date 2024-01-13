@@ -26,14 +26,14 @@ validated_classes = {
 
 def validated_args(args, check_id=False):
     """Checks on args to validated classname entry"""
-    if not args[0]:
+    if not args:
         print("** class name missing **")
         return False
     class_name = args[0]
     if class_name not in validated_classes and class_name not in globals():
         print("** class doesn't exist **")
         return False
-    if not args[1] and check_id:
+    if not args and check_id:
         print("** instance id missing **")
         return False
     return True
@@ -135,7 +135,7 @@ the class name and id by adding or updating attribute
         except Exception:
                 pass
         key = f"{args[0]}.{args[1]}"
-        req_instance = obj[key]
+        req_instance = obj.get(key, None)
         if req_instance is None:
             print("** no instance found **")
             return
