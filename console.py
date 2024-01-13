@@ -24,16 +24,16 @@ validated_classes = {
             'Amenity': Amenity, 'Review': Review}
 
 
-def validated_args(args=[], check_id=False):
+def validated_args(args, check_id=False):
     """Checks on args to validated classname entry"""
-    if len(args) < 1:
+    if not args and not args[0]:
         print("** class name missing **")
         return False
     class_name = args[0]
     if class_name not in validated_classes and class_name not in globals():
         print("** class doesn't exist **")
         return False
-    if len(args) < 2 and check_id:
+    if (len(args) < 2 or not args[1]) and check_id:
         print("** instance id missing **")
         return False
     return True
