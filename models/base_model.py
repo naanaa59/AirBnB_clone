@@ -25,6 +25,8 @@ class BaseModel():
     def __init__(self, *args, **kwargs):
         """
             Initialization method for att attributes
+            we can create an instance with kwargs or without
+            args
         """
         if kwargs and len(kwargs) > 0:
             for key, value in kwargs.items():
