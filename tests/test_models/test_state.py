@@ -21,7 +21,6 @@ class Test_State_Class(unittest.TestCase):
         """setUp method"""
         self.s1 = State()
         self.s2 = State()
-        
 
     def tearDown(self):
         """tearDown method"""
@@ -35,7 +34,6 @@ class Test_State_Class(unittest.TestCase):
         self.assertNotEqual(self.s1.id, self.s2.id)
 
     # ***************************************************************
-    
     # *********************************************************
     def test_datetime_attr(self):
         """Test datetime attributes"""
@@ -60,7 +58,6 @@ class Test_State_Class(unittest.TestCase):
         self.assertTrue(search_key in storage.all().keys())
         search_key = f"{self.s2.__class__.__name__}.{self.s2.id}"
         self.assertTrue(search_key in storage.all().keys())
-       
 
     def test_to_dict_id(self):
         """Test to_dict method from BaseModel"""

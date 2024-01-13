@@ -23,7 +23,6 @@ class Test_Review_Class(unittest.TestCase):
         """setUp method"""
         self.r1 = Review()
         self.r2 = Review()
-        
 
     def tearDown(self):
         """tearDown method"""
@@ -36,9 +35,6 @@ class Test_Review_Class(unittest.TestCase):
         """Test Review instance id"""
         self.assertNotEqual(self.r1.id, self.r2.id)
 
-    # ***************************************************************
-    
-    # *********************************************************
     def test_datetime_attr(self):
         """Test datetime attributes"""
         self.assertIsInstance(self.r1.created_at, datetime)
@@ -64,7 +60,6 @@ class Test_Review_Class(unittest.TestCase):
         self.assertTrue(search_key in storage.all().keys())
         search_key = f"{self.r2.__class__.__name__}.{self.r2.id}"
         self.assertTrue(search_key in storage.all().keys())
-       
 
     def test_to_dict_id(self):
         """Test to_dict method from BaseModel"""

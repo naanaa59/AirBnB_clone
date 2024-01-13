@@ -22,7 +22,6 @@ class Test_City_Class(unittest.TestCase):
         """setUp method"""
         self.c1 = City()
         self.s2 = City()
-        
 
     def tearDown(self):
         """tearDown method"""
@@ -36,7 +35,6 @@ class Test_City_Class(unittest.TestCase):
         self.assertNotEqual(self.c1.id, self.s2.id)
 
     # ***************************************************************
-    
     # *********************************************************
     def test_datetime_attr(self):
         """Test datetime attributes"""
@@ -62,7 +60,6 @@ class Test_City_Class(unittest.TestCase):
         self.assertTrue(search_key in storage.all().keys())
         search_key = f"{self.s2.__class__.__name__}.{self.s2.id}"
         self.assertTrue(search_key in storage.all().keys())
-       
 
     def test_to_dict_id(self):
         """Test to_dict method from BaseModel"""
