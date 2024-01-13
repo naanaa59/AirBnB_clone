@@ -165,7 +165,7 @@ on their class name"""
         obj_id = obj[0]
 
         validated_methods = {
-            'all': self.do_all,
+            'all': self.do_all, 'create': self.do_create,
             'count': self.do_count,
             'show': self.do_show, 'destroy': self.do_destroy,
             'update': self.do_update
@@ -173,7 +173,7 @@ on their class name"""
         if obj_id is None:
             if method in validated_methods.keys():
                 return validated_methods[method](f"{class_name}")
-        elif obj_id is not None:    
+        elif obj_id is not None:
             return validated_methods[
                 method](f"{class_name} {obj_id}")
         print("** Unknown syntax: {}".format(arg))
