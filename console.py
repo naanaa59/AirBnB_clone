@@ -156,18 +156,12 @@ on their class name"""
 
         args = arg.split(".")
         'output [User, all()]'
-        obj_id = None
-        attr_name = None
-        attr_value = None
+
         class_name = args[0]
         command = args[1].split("(")
+
         'output [all, )]'
         method = command[0]
-        content = command[1].rstrip(')').split(',')
-        obj_id = content[0].strip()
-        if len(content) >= 3:
-            attr_name = content[1].rstrip()
-            attr_value = content[2].rstrip()
 
         validated_methods = {
             'all': self.do_all,
@@ -176,18 +170,7 @@ on their class name"""
             'update': self.do_update
             }
         if method in validated_methods.keys():
-            if obj_id is None:
-                return validated_methods[
-                    method](f"{class_name}")
-            elif attr_name is not None and attr_value is not None:
-                return validated_methods[
-                    method](
-                        f"{class_name} {obj_id} {attr_name} {attr_value}")
-        print(method)
-        print(class_name)
-        print(obj_id)
-        print(attr_name)
-        print(attr_value)
+            return validated_methods[method](f"{class_name}")
         print("** Unknown syntax: {}".format(arg))
         return False
 
