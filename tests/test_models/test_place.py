@@ -12,18 +12,18 @@ from time import sleep
 import os
 import shutil
 
+
 class TestPlace(unittest.TestCase):
     """
         Test class for Place class
     """
     back_up_path = "back_up.json"
     original_path = FileStorage._FileStorage__file_path
-    
+
     def setUp(self) -> None:
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)
 
-    
     def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -31,7 +31,7 @@ class TestPlace(unittest.TestCase):
             os.remove(FileStorage._FileStorage__file_path)
         if os.path.exists(self.back_up_path):
             shutil.move(self.back_up_path, self.original_path)
-            
+
     def test_init(self):
         """
             __init__ method testing
@@ -51,7 +51,6 @@ class TestPlace(unittest.TestCase):
         model.latitude = 1.3
         model.longitude = 1.5
         model.amenity_ids = am.id
-
 
         self.assertTrue(hasattr(model, 'id'))
         self.assertTrue(hasattr(model, 'created_at'))
@@ -190,12 +189,12 @@ class TestPlace(unittest.TestCase):
         model.latitude = 1.3
         model.longitude = 1.5
         model.amenity_ids = am.id
-    
+
         model_dict = model.to_dict()
 
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
-    
+
         self.assertEqual(model_dict['__class__'], 'Place')
         self.assertEqual(model_dict['id'], model.id)
         self.assertEqual(model_created_at, model.created_at)
@@ -210,9 +209,6 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(model.longitude, model_dict['longitude'])
         self.assertEqual(model.amenity_ids, model_dict['amenity_ids'])
 
-        
-        
-    
     def test_str_method(self):
         """
             __str__ method testing

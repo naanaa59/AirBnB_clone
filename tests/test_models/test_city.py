@@ -9,6 +9,7 @@ from time import sleep
 import os
 import shutil
 
+
 class TestCity(unittest.TestCase):
     """
         Test class for City class
@@ -16,12 +17,11 @@ class TestCity(unittest.TestCase):
 
     back_up_path = "back_up.json"
     original_path = FileStorage._FileStorage__file_path
-    
+
     def setUp(self) -> None:
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)
 
-    
     def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -49,13 +49,12 @@ class TestCity(unittest.TestCase):
         self.assertIsInstance(model.updated_at, datetime)
         self.assertIsInstance(model.name, str)
 
-
     def test_init_with_kwargs(self):
         """
             init with kwargs testing
         """
         model = City()
-        
+
         model_dict = model.to_dict()
         new_model = City(**model_dict)
 
@@ -94,8 +93,6 @@ class TestCity(unittest.TestCase):
         self.assertIn('name', model_dict)
         self.assertIn('state_id', model_dict)
 
-        
-
     def test_to_dict_values(self):
         """
             to_dict() methos testing
@@ -104,19 +101,19 @@ class TestCity(unittest.TestCase):
         state = State()
         model.name = "state"
         model.state_id = state.id
-    
+
         model_dict = model.to_dict()
 
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
-    
+
         self.assertEqual(model_dict['__class__'], 'City')
         self.assertEqual(model_dict['id'], model.id)
         self.assertEqual(model_dict['state_id'], model.state_id)
         self.assertEqual(model_created_at, model.created_at)
         self.assertEqual(model_updated_at, model.updated_at)
         self.assertEqual(model.name, model_dict['name'])
-    
+
     def test_str_method(self):
         """
             __str__ method testing

@@ -10,6 +10,7 @@ from time import sleep
 import os
 import shutil
 
+
 class TestUser(unittest.TestCase):
     """
         Test class for User class
@@ -21,14 +22,13 @@ class TestUser(unittest.TestCase):
     model.password = "root"
     model.first_name = "my_first"
     model.last_name = "my_last"
-    
+
     def setUp(self) -> None:
-        
+
         model_dict = self.model.to_dict()
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)
 
-    
     def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -36,12 +36,12 @@ class TestUser(unittest.TestCase):
             os.remove(FileStorage._FileStorage__file_path)
         if os.path.exists(self.back_up_path):
             shutil.move(self.back_up_path, self.original_path)
-    
+
     def test_init(self):
         """
             __init__ method testing
         """
-        
+
         self.assertTrue(hasattr(self.model, 'id'))
         self.assertTrue(hasattr(self.model, 'created_at'))
         self.assertTrue(hasattr(self.model, 'updated_at'))
@@ -69,7 +69,7 @@ class TestUser(unittest.TestCase):
         """
             save() method testing
         """
-        
+
         initial_updated_at = self.model.updated_at
         sleep(0.1)
         self.model.save()
@@ -89,7 +89,6 @@ class TestUser(unittest.TestCase):
         self.assertIn('password', model_dict)
         self.assertIn('first_name', model_dict)
         self.assertIn('last_name', model_dict)
-        
 
     def test_to_dict_values(self):
         """
@@ -103,7 +102,7 @@ class TestUser(unittest.TestCase):
         model_dict = model.to_dict()
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
-    
+
         self.assertEqual(model_dict['__class__'], 'User')
         self.assertEqual(model_dict['id'], model.id)
         self.assertEqual(model_created_at, model.created_at)
@@ -112,7 +111,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(model.email, model_dict['email'])
         self.assertEqual(model.first_name, model_dict['first_name'])
         self.assertEqual(model.last_name, model_dict['last_name'])
-    
+
     def test_str_method(self):
         """
             __str__ method testing
@@ -123,7 +122,5 @@ class TestUser(unittest.TestCase):
         self.assertEqual(str(model), expected_output)
 
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
     unittest.main()
-   
-

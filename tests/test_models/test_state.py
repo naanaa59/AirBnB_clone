@@ -8,18 +8,18 @@ from time import sleep
 import os
 import shutil
 
+
 class TestState(unittest.TestCase):
     """
         Test class for State class
     """
     back_up_path = "back_up.json"
     original_path = FileStorage._FileStorage__file_path
-    
+
     def setUp(self) -> None:
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)
 
-    
     def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -80,7 +80,6 @@ class TestState(unittest.TestCase):
         self.assertIn('updated_at', model_dict)
         self.assertIn('id', model_dict)
         self.assertIn('name', model_dict)
-        
 
     def test_to_dict_values(self):
         """
@@ -88,18 +87,18 @@ class TestState(unittest.TestCase):
         """
         model = State()
         model.name = "state"
-    
+
         model_dict = model.to_dict()
 
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
-    
+
         self.assertEqual(model_dict['__class__'], 'State')
         self.assertEqual(model_dict['id'], model.id)
         self.assertEqual(model_created_at, model.created_at)
         self.assertEqual(model_updated_at, model.updated_at)
         self.assertEqual(model.name, model_dict['name'])
-    
+
     def test_str_method(self):
         """
             __str__ method testing

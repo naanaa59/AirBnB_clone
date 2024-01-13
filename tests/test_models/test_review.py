@@ -10,18 +10,18 @@ from time import sleep
 import os
 import shutil
 
+
 class TestReview(unittest.TestCase):
     """
         Test class for Review class
     """
     back_up_path = "back_up.json"
     original_path = FileStorage._FileStorage__file_path
-    
+
     def setUp(self) -> None:
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)
 
-    
     def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -114,7 +114,7 @@ class TestReview(unittest.TestCase):
 
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
-    
+
         self.assertEqual(model_dict['__class__'], 'Review')
         self.assertEqual(model_dict['id'], model.id)
         self.assertEqual(model_created_at, model.created_at)

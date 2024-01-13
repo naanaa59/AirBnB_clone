@@ -8,18 +8,18 @@ from datetime import datetime
 from time import sleep
 import shutil
 
+
 class TestAmenity(unittest.TestCase):
     """
         Test class for Amenity class
     """
     back_up_path = "back_up.json"
     original_path = FileStorage._FileStorage__file_path
-    
+
     def setUp(self) -> None:
         if os.path.exists(FileStorage._FileStorage__file_path):
             shutil.copy(self.original_path, self.back_up_path)
 
-    
     def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
@@ -34,7 +34,6 @@ class TestAmenity(unittest.TestCase):
         """
         model = Amenity()
         model.name = "pool"
-        
 
         self.assertTrue(hasattr(model, 'id'))
         self.assertTrue(hasattr(model, 'created_at'))
@@ -50,7 +49,7 @@ class TestAmenity(unittest.TestCase):
             init with kwargs testing
         """
         model = Amenity()
-        
+
         model_dict = model.to_dict()
         new_model = Amenity(**model_dict)
 
@@ -86,9 +85,6 @@ class TestAmenity(unittest.TestCase):
         self.assertIn('updated_at', model_dict)
         self.assertIn('id', model_dict)
         self.assertIn('name', model_dict)
-        
-
-        
 
     def test_to_dict_values(self):
         """
@@ -96,18 +92,17 @@ class TestAmenity(unittest.TestCase):
         """
         model = Amenity()
         model.name = "pool"
-    
         model_dict = model.to_dict()
 
         model_created_at = datetime.fromisoformat(model_dict['created_at'])
         model_updated_at = datetime.fromisoformat(model_dict['updated_at'])
-    
+
         self.assertEqual(model_dict['__class__'], 'Amenity')
         self.assertEqual(model_dict['id'], model.id)
         self.assertEqual(model_created_at, model.created_at)
         self.assertEqual(model_updated_at, model.updated_at)
         self.assertEqual(model.name, model_dict['name'])
-    
+
     def test_str_method(self):
         """
             __str__ method testing
