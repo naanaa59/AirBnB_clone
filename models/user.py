@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    User class file
+    User class file this class inheartes from BaseModel
 """
 from models.base_model import BaseModel
 
