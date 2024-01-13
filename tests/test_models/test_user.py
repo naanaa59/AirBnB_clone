@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ Test file for User class """
 
-from typing import Any
 from models.user import User
 from models.engine.file_storage import FileStorage
 import unittest
