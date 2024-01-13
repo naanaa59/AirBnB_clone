@@ -221,3 +221,7 @@ class TestPlace(unittest.TestCase):
         expected_output = f"[{model.__class__.__name__}] \
 ({model.id}) {model.__dict__}"
         self.assertEqual(str(model), expected_output)
+
+
+if __name__ == "__main__":
+    unittest.main()
