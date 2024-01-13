@@ -156,12 +156,13 @@ on their class name"""
 
         args = arg.split(".")
         'output [User, all()]'
-
+        obj_id = None
         class_name = args[0]
         command = args[1].split("(")
-
-        'output [all, )]'
+        'output [all, id)]'
         method = command[0]
+        obj = command[1].split(")")
+        obj_id = obj[0]
 
         validated_methods = {
             'all': self.do_all,
@@ -169,8 +170,12 @@ on their class name"""
             'show': self.do_show, 'destroy': self.do_destroy,
             'update': self.do_update
             }
-        if method in validated_methods.keys():
-            return validated_methods[method](f"{class_name}")
+        if obj_id is None:
+            if method in validated_methods.keys():
+                return validated_methods[method](f"{class_name}")
+        elif obj_id is not None:    
+            return validated_methods[
+                method](f"{class_name} {obj_id}")
         print("** Unknown syntax: {}".format(arg))
         return False
 
