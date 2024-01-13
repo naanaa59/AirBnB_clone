@@ -151,7 +151,6 @@ class TestPlace(unittest.TestCase):
         model.longitude = 1.5
         model.amenity_ids = am.id
 
-
         model_dict = model.to_dict()
 
         self.assertTrue(isinstance(model_dict, dict))
@@ -202,7 +201,8 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(model.user_id, model_dict['user_id'])
         self.assertEqual(model.city_id, model_dict['city_id'])
         self.assertEqual(model.description, model_dict['description'])
-        self.assertEqual(model.number_bathrooms, model_dict['number_bathrooms'])
+        self.assertEqual(
+                model.number_bathrooms, model_dict['number_bathrooms'])
         self.assertEqual(model.number_rooms, model_dict['number_rooms'])
         self.assertEqual(model.max_guest, model_dict['max_guest'])
         self.assertEqual(model.latitude, model_dict['latitude'])

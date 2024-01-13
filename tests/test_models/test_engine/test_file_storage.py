@@ -10,31 +10,31 @@ from models.place import Place
 from models.state import State
 from models.amenity import Amenity
 from models.review import Review
-
 from models import storage
 import unittest
 import os
 import json
+import shutil
+
 
 class TestFileStorage(unittest.TestCase):
     """
         Test class for FileStorage class
     """
-    file_path = FileStorage._FileStorage__file_path
-    data = None
-    if os.path.exists(file_path):
-        with open(file_path, 'r') as f:
-            data = f.read()
-    
+    back_up_path = "back_up.json"
+    original_path = FileStorage._FileStorage__file_path
 
-    def setUp(self):
-        pass
+    def setUp(self) -> None:
+        if os.path.exists(FileStorage._FileStorage__file_path):
+            shutil.copy(self.original_path, self.back_up_path)
 
     def tearDown(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
         if os.path.exists(FileStorage._FileStorage__file_path):
             os.remove(FileStorage._FileStorage__file_path)
+        if os.path.exists(self.back_up_path):
+            shutil.move(self.back_up_path, self.original_path)
 
     def test_all_method(self):
         """
@@ -54,7 +54,6 @@ class TestFileStorage(unittest.TestCase):
     def test_new_with_args(self):
         with self.assertRaises(TypeError):
             storage.new(BaseModel(), 1)
-
 
     def test_save_method(self):
         """
@@ -108,6 +107,6 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(TypeError):
             storage.reload(None)
 
-    if data is not None:
-        with open(file_path, 'w') as f:
-            f.write(data)
+
+if __name__ == '__main__':
+    unittest.main()

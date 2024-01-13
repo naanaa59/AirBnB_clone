@@ -54,6 +54,12 @@ class FileStorage:
             json.dump(dict_obj, json_file)
 
     def reload(self):
+        """
+            deserializes the JSON file to __objects
+            only if the JSON file (__file_path) exists
+             otherwise, do nothing. If the file doesn’t exist,
+             no exception should be raised)
+        """
         from models.base_model import BaseModel
         from models.user import User
         from models.city import City
@@ -62,12 +68,6 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        """
-            deserializes the JSON file to __objects
-            only if the JSON file (__file_path) exists
-             otherwise, do nothing. If the file doesn’t exist,
-             no exception should be raised)
-        """
         classes = {
             'BaseModel': BaseModel, 'User': User,
             'State': State, 'Place': Place, 'City': City,
