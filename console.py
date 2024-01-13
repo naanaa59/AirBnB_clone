@@ -24,16 +24,16 @@ validated_classes = {
             'Amenity': Amenity, 'Review': Review}
 
 
-def validated_args(args, check_id=False):
+def validated_args(args=[], check_id=False):
     """Checks on args to validated classname entry"""
-    if not args:
+    if len(args) < 1:
         print("** class name missing **")
         return False
     class_name = args[0]
     if class_name not in validated_classes and class_name not in globals():
         print("** class doesn't exist **")
         return False
-    if not args and check_id:
+    if len(args) < 2 and check_id:
         print("** instance id missing **")
         return False
     return True
@@ -115,9 +115,9 @@ the class name and id by adding or updating attribute
 (save the change into the JSON file)."""
 
         prased_arg = re.match(
-            r'^(\S*)\s?(\S*)\s?("[^"]*"|\S*)?\s?("[^"]*"|\S*)', arg)
-        obj = storage.all()
+            r'^(\S*)\s?(\S*)\s?("[^"]+"|\S*)?\s?("[^"]+"|\S*)', arg)
         args = list(prased_arg.groups())
+        obj = storage.all()
         if not validated_args(args, check_id=True):
             return
         args[0] = args[0].strip('"')
