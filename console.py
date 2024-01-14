@@ -60,8 +60,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
 
     def do_show(self, arg):
-        """Show command Prints the string representation
-of an instance based on the class name and id."""
+        """Show command Prints the string representation"""
         args = arg.split()
 
         if not validated_args(args, check_id=True):
@@ -75,8 +74,7 @@ of an instance based on the class name and id."""
         print(req_instance)
 
     def do_all(self, arg):
-        """all command Prints all string representation
-of all instances based or not on the class name."""
+        """all command Prints all string representation"""
 
         args = arg.split()
         objects = storage.all()
@@ -94,8 +92,7 @@ of all instances based or not on the class name."""
             return
 
     def do_destroy(self, arg):
-        """Destroy command Deletes an instance based
-on the class name and id (save the change into the JSON file)."""
+        """Destroy command Deletes an instance"""
         args = arg.split()
 
         if not validated_args(args, check_id=True):
@@ -110,9 +107,7 @@ on the class name and id (save the change into the JSON file)."""
         storage.save()
 
     def do_update(self, arg):
-        """Reload command Updates an instance based on
-the class name and id by adding or updating attribute
-(save the change into the JSON file)."""
+        """Update command reloads an instance"""
 
         prased_arg = re.match(
             r'^(\S*)\s?(\S*)\s?("[^"]+"|\S*)?\s?("[^"]+"|\S*)', arg)
@@ -145,8 +140,7 @@ the class name and id by adding or updating attribute
         storage.save()
 
     def do_count(self, arg):
-        """Count command counts all instances based
-on their class name"""
+        """Count command counts all instances"""
         args = arg.split()
         objects = storage.all()
         if len(args) < 1:
