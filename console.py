@@ -24,16 +24,16 @@ validated_classes = {
             'Amenity': Amenity, 'Review': Review}
 
 
-def validated_args(args=[], check_id=False):
+def validated_args(args, check_id=False):
     """Checks on args to validated classname entry"""
-    if len(args) < 1:
+    if not args or not args[0]:
         print("** class name missing **")
         return False
     class_name = args[0]
     if class_name not in validated_classes and class_name not in globals():
         print("** class doesn't exist **")
         return False
-    if len(args) < 2 and check_id:
+    if (len(args) < 2 or not args[1]) and check_id:
         print("** instance id missing **")
         return False
     return True
@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_create(self, arg):
-        """Create command creates a new instance of BaseModel"""
+        """Creates new instance"""
         if not arg:
             print("** class name missing **")
             return
@@ -126,8 +126,10 @@ the class name and id by adding or updating attribute
 
         if not args[2]:
             print("** attribute name missing **")
+            return
         if not args[3]:
             print("** value missing **")
+            return
         attr_name = args[2]
         attr_value = args[3]
         try:
@@ -162,31 +164,57 @@ on their class name"""
 
     def default(self, arg):
         """Default behavior of an invalid syntax"""
-
-        args = arg.split(".")
-        'output [User, all()]'
-        obj_id = None
-        class_name = args[0]
-        command = args[1].split("(")
-        'output [all, id)]'
-        method = command[0]
-        obj = command[1].split(")")
-        obj_id = obj[0]
-
         validated_methods = {
             'all': self.do_all, 'create': self.do_create,
             'count': self.do_count,
             'show': self.do_show, 'destroy': self.do_destroy,
             'update': self.do_update
             }
-        if obj_id is None:
-            if method in validated_methods.keys():
-                return validated_methods[method](f"{class_name}")
-        elif obj_id is not None:
-            return validated_methods[
-                method](f"{class_name} {obj_id}")
-        print("** Unknown syntax: {}".format(arg))
-        return False
+        command, args = self.extract(arg)
+        if not args:
+            print("** Unknown syntax: {}".format(arg))
+            return False
+        for arg in args:
+            validated_methods[command](arg)
+        return
+
+    def extract(self, arg):
+        command = None
+        name = None
+        args = None
+        all_args = []
+        args_list = []
+        res = re.match(
+            r'^\s*(\w+)\.(\w+)\((?:([{"\']?.*["\'}]?))?\)\s*$', arg)
+        if res:
+            name = res.group(1)
+            command = res.group(2)
+            args = res.group(3)
+        if args:
+            content = re.match(
+                r'"?([^"]\S+)"?, {(.+)}', args)
+        else:
+            content = None
+        if command == "update" and content:
+            id = content.group(1)
+            patt = re.compile(
+                r'("[^"]+"|\S+):\s("[^"]+"|[^,]+)')
+            matches = patt.findall(content.group(2))
+            for match in matches:
+                key = match[0]
+                value = match[1]
+                all_args.append(f"{id} {key} {value}")
+        elif args:
+            args = args.replace(',', '')
+            all_args.append(
+                re.sub(r'(["\'])([^"\s]*)\1', r'\2', args))
+        if all_args:
+            for arg in all_args:
+                args_list.append(
+                    f"{name} {arg}" if arg else f"{name}")
+        elif name:
+            args_list.append(f"{name}")
+        return command, args_list
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
