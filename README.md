@@ -93,5 +93,5 @@ $ python3 unittest -m tests/test_console.py
 
 ## Authors :black_nib:
 
-* **OUMAIMA NAANAA <oumaimanaanaapro@gmail.com>
-* **BADR ANNABI <badrannabi@gmail.com>
+* **Oumaima NAANAA <oumaimanaanaapro@gmail.com>
+* **Badr ANNABI <badrannabi@gmail.com>
