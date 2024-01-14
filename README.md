@@ -23,7 +23,10 @@ This first step consists of:
 
 The console works both in interactive mode and non-interactive mode, much like a Unix shell.
 It prints a prompt **(hbnb)** and waits for the user for input.
+# Usage 💻
 
+The console works both in interactive mode and non-interactive mode, much like a Unix shell.
+It prints a prompt **(hbnb)** and waits for the user for input.
 Command | Example
 ------- | -------
 Run the console | ```./console.py```
