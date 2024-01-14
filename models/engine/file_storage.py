@@ -43,7 +43,7 @@ class FileStorage:
             sets in __objects the obj with key <obj class name>.id
         """
         class_name = obj.__class__.__name__
-        id_obj = getattr(obj, 'id', None)
+        id_obj = getattr(obj, 'id')
 
         if id_obj is not None:
             key = f"{class_name}.{id_obj}"
