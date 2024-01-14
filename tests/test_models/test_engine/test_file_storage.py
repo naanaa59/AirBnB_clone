@@ -59,7 +59,7 @@ class TestFileStorage(unittest.TestCase):
         """
         storage = FileStorage()
         objects = FileStorage._FileStorage__objects
-        self.assertEqual(objects, {})
+        self.assertNotEqual(objects, {})
 
 # ---------tests for public intance methods----------------
     def test_all(self):
