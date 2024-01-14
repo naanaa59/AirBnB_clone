@@ -74,29 +74,7 @@ EOF  help  quit
 (hbnb)
 $
 ```
-### Non-interactive mode (example)
 
-```bash
-$ echo "help" | ./console.py
-(hbnb)
-
-Documented commands (type help <topic>):
-========================================
-EOF  help  quit
-(hbnb)
-$
-$ cat test_help
-help
-$
-$ cat test_help | ./console.py
-(hbnb)
-
-Documented commands (type help <topic>):
-========================================
-EOF  help  quit
-(hbnb)
-$
-```
 ## Testing :straight_ruler:
 
 Unittests for the HolbertonBnB project are defined in the [tests](./tests)
