@@ -18,7 +18,10 @@ It represents the first step towards building a full web application.
 This first step consists of:
 - a custom command-line interface for data management,
 - and the base classes for the storage of this data.
-
+correct = "*** Unknown syntax: BaseModel.create()"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("BaseModel.create()"))
+            self.assertEqual(correct, output.getvalue().strip())
 ## Usage 💻
 
 The console works both in interactive mode and non-interactive mode, much like a Unix shell.
