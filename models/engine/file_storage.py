@@ -39,15 +39,8 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """
-            sets in __objects the obj with key <obj class name>.id
-        """
-        class_name = obj.__class__.__name__
-        id_obj = getattr(obj, 'id')
-
-        if id_obj is not None:
-            key = f"{class_name}.{id_obj}"
-            self.__objects[key] = obj
+        """ setter for the `__objects` private attribute """
+        self.__objects.update({f"{obj.__class__.__name__}.{obj.id}": obj})
 
     def save(self):
         """
