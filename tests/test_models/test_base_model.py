@@ -1,108 +1,143 @@
 #!/usr/bin/python3
-"""
-A unittest for BaseModel class
+"""This is the ``test_base_model`` module
+It contains tests for the BaseModel class
 """
 
-import unittest
-from models.base_model import BaseModel
-from models import storage
+
 from datetime import datetime
-import os
-import time
+from datetime import timedelta
+from io import StringIO
+from models.base_model import BaseModel
+from unittest.mock import patch
+import unittest
 
 
-class Test_BaseModel_Class(unittest.TestCase):
-    """Unittest class for testing class BaseModel
-    Test the following attributes
-"""
+class TestBaseModel(unittest.TestCase):
+    """Defines a class TestBaseModel to test BaseModel class"""
+
     def setUp(self):
-        """setUp method"""
-        self.b1 = BaseModel()
-        self.b2 = BaseModel()
+        """Set up all instances that will be used in each test"""
+        self.bm1 = BaseModel()
+        self.bm2 = BaseModel()
 
-    def tearDown(self):
-        """tearDown method"""
-        del self.b1
-        del self.b2
-        if os.path.exists("file.json"):
-            os.remove("file.json")
+#   -----test for public instance attributes-----
+    def test_id(self):
+        """Tests all edge cases for the instance id"""
 
-    def test_BaseModel_id(self):
-        """Test BaseModel instance id"""
-        self.assertNotEqual(self.b1.id, self.b2.id)
+        self.assertIsInstance(self.bm1, BaseModel)
+        self.assertTrue(hasattr(self.bm1, "id"))
+        self.assertNotEqual(self.bm1.id, self.bm2.id)
+        self.assertIsInstance(self.bm1.id, str)
 
-    # ***************************************************************
-    # *********************************************************
-    def test_datetime_attr(self):
-        """Test datetime attributes"""
-        self.assertIsInstance(self.b1.created_at, datetime)
-        self.assertIsInstance(self.b1.updated_at, datetime)
+    def test_created_at(self):
+        """Tests for all edges cases for the instance created_at"""
 
-    def test_initial_values(self):
-        """Test initial values for BaseModel class attributes"""
+        now = datetime.now()
+        seconds = timedelta(seconds=1)
+        self.assertAlmostEqual(self.bm1.created_at, now, delta=seconds)
+        self.assertAlmostEqual(self.bm2.created_at, now, delta=seconds)
+        self.assertTrue(hasattr(self.bm1, "created_at"))
+        self.assertTrue(hasattr(self.bm2, "created_at"))
+        self.assertIsInstance(self.bm1.created_at, datetime)
+        self.assertIsInstance(self.bm2.created_at, datetime)
 
-    def test_BaseModel_inherits_BaseModel(self):
-        """Test if BaseModel inherits from BaseModel"""
-        self.assertIsInstance(self.b1, BaseModel)
+    def test_updated_at(self):
+        """Tests all edge cases for the instance updated_at"""
 
-    def test_BaseModel_type(self):
-        """Test if BaseModel instance is of the same type"""
-        self.assertEqual(type(self.b1), BaseModel)
+        now = datetime.now()
+        seconds = timedelta(seconds=1)
+        self.assertAlmostEqual(self.bm1.updated_at, now, delta=seconds)
+        self.assertAlmostEqual(self.bm2.updated_at, now, delta=seconds)
+        self.assertTrue(hasattr(self.bm1, "updated_at"))
+        self.assertTrue(hasattr(self.bm2, "updated_at"))
+        self.assertIsInstance(self.bm1.updated_at, datetime)
+        self.assertIsInstance(self.bm2.updated_at, datetime)
 
-    def test_storage_contains_instances(self):
-        """Test storage contains the instances"""
-        search_key = f"{self.b1.__class__.__name__}.{self.b1.id}"
-        self.assertTrue(search_key in storage.all().keys())
-        search_key = f"{self.b2.__class__.__name__}.{self.b2.id}"
-        self.assertTrue(search_key in storage.all().keys())
+#   ------test for public instance methods-------
 
-    def test_to_dict_id(self):
-        """Test to_dict method from BaseModel"""
-        dict_c1 = self.b1.to_dict()
-        self.assertIsInstance(dict_c1, dict)
-        self.assertIn('id', dict_c1.keys())
+    def test_init(self):
+        """Test for object recreation with json representation"""
 
-    def test_to_dict_created_at(self):
-        """Test to_dict method from BaseModel"""
-        dict_c1 = self.b1.to_dict()
-        self.assertIsInstance(dict_c1, dict)
-        self.assertIn('created_at', dict_c1.keys())
+        origin = BaseModel()
 
-    def test_to_dict_updated_at(self):
-        """Test to_dict method from BaseModel"""
-        dict_c1 = self.b1.to_dict()
-        self.assertIsInstance(dict_c1, dict)
-        self.assertIn('updated_at', dict_c1.keys())
-
-    def test_to_dict_class_name(self):
-        """Test to_dict method from BaseModel"""
-        dict_c1 = self.b1.to_dict()
-        self.assertEqual(self.b1.__class__.__name__, dict_c1["__class__"])
-
-    def test_str_(self):
-        """Test __str__ method from BaseModel"""
-        cls_rp = str(self.b1)
-        format = "[{}] ({}) {}".format(self.b1.__class__.__name__,
-                                       self.b1.id, self.b1.__dict__)
-        self.assertEqual(format, cls_rp)
-
-    def test_check_two_instances_with_dict(self):
-        """Test to check an instance created from a dict is different from
-another"""
-        dict_c1 = self.b1.to_dict()
-        instance = BaseModel(**dict_c1)
-        self.assertIsNot(self.b1, instance)
-        self.assertEqual(str(self.b1), str(instance))
-        self.assertFalse(instance is self.b1)
+        self.assertIs(type(origin), BaseModel)
+        origin.name = "Omar"
+        origin.number = 89
+        origin_dict = origin.to_dict()
+        copy = BaseModel(**origin_dict)
+        self.assertIs(type(copy), BaseModel)
+        self.assertIsNot(origin, copy)
+        class_map = {
+                     "id": str,
+                     "created_at": datetime,
+                     "updated_at": datetime,
+                     "name": str,
+                     "number": int}
+        for key, value in class_map.items():
+            with self.subTest(key=key, value=value):
+                self.assertIn(key, origin.__dict__)
+                self.assertIn(key, copy.__dict__)
+                self.assertIs(type(origin.__dict__[key]), value)
+                self.assertIs(type(copy.__dict__[key]), value)
+        self.assertEqual(origin.name, "Omar")
+        self.assertEqual(copy.name, "Omar")
+        self.assertEqual(origin.number, 89)
+        self.assertEqual(copy.number, 89)
 
     def test_save(self):
-        """Test save() method from BaseModel"""
-        update_old = self.b1.updated_at
-        time.sleep(0.1)
-        self.b1.save()
-        updated_new = self.b1.updated_at
-        self.assertNotEqual(update_old, updated_new)
+        """Tests all edge cases for the save method"""
 
+        now = datetime.now()
+        seconds = timedelta(seconds=1)
+        bm1_initial_updated_at = self.bm1.updated_at
+        bm2_initial_updated_at = self.bm2.updated_at
 
-if __name__ == "__main__":
-    unittest.main()
+        self.bm1.save()
+        self.bm2.save()
+
+        self.assertNotEqual(self.bm1.updated_at, bm1_initial_updated_at)
+        self.assertNotEqual(self.bm2.updated_at, bm2_initial_updated_at)
+        self.assertAlmostEqual(self.bm1.updated_at, now, delta=seconds)
+        self.assertAlmostEqual(self.bm2.updated_at, now, delta=seconds)
+
+    def test_to_dict(self):
+        """Tests all edge cases for the return value of to_dict method"""
+
+        self.bm1.name = "My first base model"
+        self.bm1.number = 89
+        updated_at = self.bm1.updated_at.isoformat()
+        created_at = self.bm1.created_at.isoformat()
+
+        expected = {"name": "My first base model", "number": 89,
+                    "__class__": "BaseModel", "created_at": created_at,
+                    "updated_at": updated_at, "id": self.bm1.id}
+
+        self.assertDictEqual(self.bm1.to_dict(), expected)
+
+        self.bm2.name = "My second base model"
+        self.bm2.number = 53
+        updated_at = self.bm2.updated_at.isoformat()
+        created_at = self.bm2.created_at.isoformat()
+
+        expected = {"name": "My second base model", "number": 53,
+                    "__class__": "BaseModel", "created_at": created_at,
+                    "updated_at": updated_at, "id": self.bm2.id}
+
+        self.assertDictEqual(self.bm2.to_dict(), expected)
+
+    def test_str(self):
+        """Tests for edge cases for print value of __str__ method"""
+
+        self.maxDiff = None
+
+        class_name = self.bm1.__class__.__name__
+        id = self.bm1.id
+        bm1_dict = self.bm1.__dict__
+
+        expected = "[{}] ({}) {}".format(class_name, id, bm1_dict)
+
+        self.assertEqual(str(self.bm1), expected)
+
+        with patch("sys.stdout", new=StringIO()) as str_out:
+            print(self.bm1, end="")
+            self.assertEqual(str_out.getvalue(), expected)
