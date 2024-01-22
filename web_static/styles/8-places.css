@@ -15,8 +15,8 @@
 article {
     display: flex;
     flex-flow: row wrap;
-    align-content: flex-start;
-    height: 390px;
+    align-items: flex-start;
+    height: auto;
     width: 390px;
     padding: 20px;
     margin: 20px;
@@ -31,11 +31,11 @@ article .title_of_place {
     width: 100%;
     font-size: 30px;
     margin-top: 3px;
-    margin-bottom: 14%;
+    margin-right: -23%;
 
 }
 .price_by_night {
-    position: absolute;
+    /* position: absolute; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,7 +46,6 @@ article .title_of_place {
     height: 80px;
     width: 80px;
     min-width: 60px;
-    margin-left: 16.5%;
     margin-top: -3px;
 }
 .information {
@@ -59,7 +58,7 @@ article .title_of_place {
     border-bottom: 1px solid #DDDDDD;
     padding-top: 3%;
     margin-top: 3%;
-    margin-bottom: auto;
+    margin-bottom: 3%;
 }
 .max_guest {
     width: 100px;
@@ -93,9 +92,8 @@ article .title_of_place {
     margin-top: 50%;
     margin-left: 20%;
 }
-.description p {
-    margin: 0;
-    padding: 0;
+.description_text {
+   margin: 0;
 
 }
 .user {

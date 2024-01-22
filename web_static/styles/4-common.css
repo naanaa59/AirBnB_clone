@@ -1,9 +1,9 @@
 body {
-    display: flex;
+    /* display: flex; */
     margin: 0;
     padding: 0;
     background-color: #FFFFFF;
-    flex-direction: column;
+    /* flex-direction: column; */
     color: #484848;
     align-items: center;
     min-height: 100vh;
@@ -13,7 +13,6 @@ body {
 }
 div.container {
     max-width: 1000px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding-left: 10px;
+    margin: 30px auto;
+    /* padding-left: 10px; */
 }

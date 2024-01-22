@@ -7,15 +7,24 @@
 .places h1 {
     height: 30px;
     width: 100%;
-    padding-left: 3%;
+    /* padding-left: 3%; */
     font-size: 30px;
 }
-.places article {
+
+article {
+    /* display: flex; */
+    /* flex-flow: row wrap; */
+    text-align: center;
+    /* height: auto; */
     width: 390px;
     padding: 20px;
     margin: 20px;
     border: 1px solid #FF5A5F;
-    border-radius: 4px;    
-    text-align: center;
+    border-radius: 4px;       
+}
+article h2 {
+    margin: 0;
+    padding: 0;
     font-size: 30px;
+    
 }

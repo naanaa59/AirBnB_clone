@@ -15,8 +15,8 @@
 article {
     display: flex;
     flex-flow: row wrap;
-    align-content: flex-start;
-    height: 650px;
+    align-items: flex-start;
+    height: auto;
     width: 390px;
     padding: 20px;
     margin: 20px;
@@ -31,11 +31,11 @@ article .title_of_place {
     width: 100%;
     font-size: 30px;
     margin-top: 3px;
-    margin-bottom: 14%;
+    margin-right: -23%;
 
 }
 .price_by_night {
-    position: absolute;
+    /* position: absolute; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,7 +46,6 @@ article .title_of_place {
     height: 80px;
     width: 80px;
     min-width: 60px;
-    margin-left: 16.5%;
     margin-top: -3px;
 }
 .information {
@@ -59,7 +58,7 @@ article .title_of_place {
     border-bottom: 1px solid #DDDDDD;
     padding-top: 3%;
     margin-top: 3%;
-    margin-bottom: auto;
+    margin-bottom: 3%;
 }
 .max_guest {
     width: 100px;
@@ -93,9 +92,8 @@ article .title_of_place {
     margin-top: 50%;
     margin-left: 20%;
 }
-.description p {
-    margin-bottom: 15px;
-    padding: 0;
+.description_text {
+   margin: 0;
 
 }
 .user {
@@ -106,22 +104,62 @@ article .title_of_place {
     font-weight: bold;
     
 }
-.article.amenities{
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 40px;
+article  .amenities{
+    
+    margin-top: 5%;
     width: 100%;
 }
 .amenities_title {
+    display: flex;
+    justify-content: flex-start;
     font-size: 16px;
     width: 100%;
     border-bottom: 1px solid #DDDDDD;
     margin-right: 10%;
 }
 .amenities_list {
+    display: flex;
+    flex-flow: column;
+    justify-items: flex-start;
     list-style-type: none;
+    margin: 0;
+    padding: 0;
+    /* justify-content: flex-start; */
+    /* flex-flow: column; */
+    /* background-image: url('../images/icon_tv.png'), url('../images/icon_wifi.png'); */
+    /* background-repeat: no-repeat, no-repeat; */
+    /* background-position: left, center; */
+    /* background-size: 25%; */
+    
+
 }
-.amenities_list li {
+.amenities_list .icon_tv{
+    margin: 0;
+    background-image: url('../images/icon_tv.png');
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 5%;
+}
+.amenities_list .icon_tv p{
+    margin-left: 6%;
+}
+.amenities_list .icon_pets{
+    margin: 0;
     background-image: url('../images/icon_pets.png');
     background-repeat: no-repeat;
+    background-position: left;
+    background-size: 5%;
+}
+.amenities_list .icon_pets p{
+    margin-left: 6%;
+}
+.amenities_list .icon_wifi{
+    margin: 0;
+    background-image: url('../images/icon_wifi.png');
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 5%;
+}
+.amenities_list .icon_wifi p{
+    margin-left: 6%;
 }
