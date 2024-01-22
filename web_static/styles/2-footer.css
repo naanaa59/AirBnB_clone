@@ -1,0 +1,12 @@
+/* footer */
+
+footer {
+    background-color: green;
+    height: 60px;
+    bottom: 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    display: grid;
+    place-content: center;
+}
