@@ -1,11 +1,12 @@
 /* footer */
 
 footer {
+    position: absolute;
     background-color: green;
     height: 60px;
+    width: 100%;
     bottom: 0;
-    left: 0;
-    right: 0;
-    display: grid;
-    place-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

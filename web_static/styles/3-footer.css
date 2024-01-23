@@ -1,10 +1,10 @@
 footer {
-    background-color: white;
+    margin: auto auto 0 auto;
+    background-color: #FFFFFF;
     height: 60px;
-    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-top: 1px solid #CCCCCC;
-    inset: 0px;
-    top: unset;
-    display: grid;
-    place-content: center;
-}  
+}
