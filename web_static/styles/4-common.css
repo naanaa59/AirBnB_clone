@@ -12,7 +12,10 @@ body {
 
 }
 div.container {
+    width: 100%;
+    /* height: auto; */
     max-width: 1000px;
     margin: 30px auto;
+    bottom: 0;
     /* padding-left: 10px; */
 }
